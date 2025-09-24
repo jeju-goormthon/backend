@@ -19,12 +19,18 @@ spec:
         - containerPort: 8080
         volumeMounts:
         - name: config-volume
+          mountPath: /app/config/extra
+          readOnly: true
+        - name: app-config-volume
           mountPath: /app/config
           readOnly: true
       volumes:
       - name: config-volume
         configMap:
           name: backend-config
+      - name: app-config-volume
+        secret:
+          secretName: backend-app-secret
 ---
 apiVersion: v1
 kind: Service
