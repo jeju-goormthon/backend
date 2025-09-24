@@ -7,10 +7,14 @@ resources:
   - backend.yaml
   # - ingress.yaml # API 호출 방식이 Client-Side인 경우 주석 해제
 
+# 민감하지 않은 설정은 ConfigMap으로 유지
 configMapGenerator:
   - name: backend-config
     files:
       - config.json=config/backend-config.json
+
+# backend-app-secret은 create-secret.sh 스크립트로 미리 생성해야 함
+# kubectl create secret generic backend-app-secret --from-file=... -n goormthon-5
 
 generatorOptions:
   disableNameSuffixHash: true
