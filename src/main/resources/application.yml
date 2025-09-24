@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: jeju
+  profiles:
+    include:
+      - jwt
+      - mysql
+      - oauth
+      - payment
+      - redis
+      - sms
+      - swagger
