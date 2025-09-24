@@ -28,3 +28,5 @@ COPY --from=builder /app/build/libs/*SNAPSHOT.jar app.jar
 
 # 포트 노출
 EXPOSE 8080 8081
+
+ENTRYPOINT ["java","-jar","/app.jar"]
