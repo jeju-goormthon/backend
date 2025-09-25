@@ -13,6 +13,7 @@ public enum ErrorCode {
     INVALID_PASSWORD(HttpStatus.UNAUTHORIZED, "U003", "비밀번호가 일치하지 않습니다."),
     INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "U004", "유효하지 않은 토큰입니다."),
     EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "U005", "만료된 토큰입니다."),
+    INVALID_VERIFICATION_CODE(HttpStatus.UNAUTHORIZED, "U006", "인증번호가 일치하지 않습니다."),
 
     ROUTE_NOT_FOUND(HttpStatus.NOT_FOUND, "R001", "노선을 찾을 수 없습니다."),
     NO_AVAILABLE_SEATS(HttpStatus.BAD_REQUEST, "R002", "예약 가능한 좌석이 없습니다."),

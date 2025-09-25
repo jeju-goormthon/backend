@@ -3,6 +3,9 @@ package goormthon.jeju.domain.user.controller;
 import goormthon.jeju.domain.user.dto.*;
 import goormthon.jeju.domain.user.entity.User;
 import goormthon.jeju.domain.user.manager.UserManager;
+import goormthon.jeju.domain.verification.dto.SendVerificationRequest;
+import goormthon.jeju.domain.verification.dto.VerifyCodeRequest;
+import goormthon.jeju.domain.verification.service.PhoneVerificationService;
 import goormthon.jeju.global.common.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -15,22 +18,19 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserManager userManager;
-
-    @PostMapping("/register")
-    public ApiResponse<TokenResponse> register(@Valid @RequestBody RegisterRequest request) {
-        TokenResponse response = userManager.register(
-                request.getPhoneNumber(),
-                request.getPassword(),
-                request.getMedicalDepartment()
-        );
-        return ApiResponse.success(response);
-    }
+    private final PhoneVerificationService phoneVerificationService;
 
     @PostMapping("/login")
-    public ApiResponse<TokenResponse> login(@Valid @RequestBody LoginRequest request) {
-        TokenResponse response = userManager.login(
+    public ApiResponse<Void> login(@Valid @RequestBody SendVerificationRequest request) {
+        phoneVerificationService.sendVerificationCode(request.getPhoneNumber());
+        return ApiResponse.success();
+    }
+
+    @PostMapping("/login/verify")
+    public ApiResponse<TokenResponse> verifyLogin(@Valid @RequestBody VerifyCodeRequest request) {
+        TokenResponse response = phoneVerificationService.verifyCodeAndLogin(
                 request.getPhoneNumber(),
-                request.getPassword()
+                request.getCode()
         );
         return ApiResponse.success(response);
     }

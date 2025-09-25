@@ -91,4 +91,15 @@ public class UserService {
             throw new GlobalException(ErrorCode.ADMIN_ONLY);
         }
     }
+
+    public User findOrCreateByPhoneNumber(String phoneNumber) {
+        return userRepository.findByPhoneNumber(phoneNumber)
+                .orElseGet(() -> {
+                    User user = User.builder()
+                            .phoneNumber(phoneNumber)
+                            .loginType(LoginType.NORMAL)
+                            .build();
+                    return userRepository.save(user);
+                });
+    }
 }
