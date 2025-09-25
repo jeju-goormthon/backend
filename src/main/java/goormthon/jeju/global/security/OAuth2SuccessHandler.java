@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
+import java.util.Map;
 
 @Slf4j
 @Component
@@ -35,7 +36,9 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
             Authentication authentication
     ) throws IOException {
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
-        String email = oAuth2User.getAttribute("email");
+
+        // 카카오 OAuth2 응답에서 이메일 추출
+        String email = extractEmail(oAuth2User);
 
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> {
@@ -43,25 +46,27 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
                     return new GlobalException(ErrorCode.USER_NOT_FOUND);
                 });
 
-        String targetUrl;
-
-        if (user.getPhoneNumber() == null || user.getPhoneNumber().isEmpty()) {
-            String tempToken = jwtTokenProvider.createAccessToken(user.getId());
-            targetUrl = UriComponentsBuilder.fromUriString(redirectUri)
-                    .queryParam("tempToken", tempToken)
-                    .queryParam("needPhoneVerification", true)
-                    .build()
-                    .toUriString();
-        } else {
-            String accessToken = jwtTokenProvider.createAccessToken(user.getId());
-            String refreshToken = jwtTokenProvider.createRefreshToken(user.getId());
-            targetUrl = UriComponentsBuilder.fromUriString(redirectUri)
-                    .queryParam("accessToken", accessToken)
-                    .queryParam("refreshToken", refreshToken)
-                    .build()
-                    .toUriString();
-        }
+        String accessToken = jwtTokenProvider.createAccessToken(user.getId());
+        String refreshToken = jwtTokenProvider.createRefreshToken(user.getId());
+        String targetUrl = UriComponentsBuilder.fromUriString(redirectUri)
+                .queryParam("accessToken", accessToken)
+                .queryParam("refreshToken", refreshToken)
+                .build()
+                .toUriString();
 
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
+    }
+
+    private String extractEmail(OAuth2User oAuth2User) {
+        // 카카오 OAuth2 응답에서 이메일 추출
+        Map<String, Object> attributes = oAuth2User.getAttributes();
+        Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
+
+        if (kakaoAccount != null) {
+            return (String) kakaoAccount.get("email");
+        }
+
+        // 다른 OAuth2 제공자의 경우 직접 email 속성 사용
+        return oAuth2User.getAttribute("email");
     }
 }
