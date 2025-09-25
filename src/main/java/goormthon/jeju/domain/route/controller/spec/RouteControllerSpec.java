@@ -42,7 +42,6 @@ public interface RouteControllerSpec {
             )
     })
     ApiResponse<List<RouteResponse>> getRoutes(
-            @Parameter(hidden = true) @AuthenticationPrincipal Long userId,
             @Parameter(
                     description = "정렬 방식 (default: 기본정렬, time: 시간순, expectedTime: 예상시간순)",
                     example = "default"
