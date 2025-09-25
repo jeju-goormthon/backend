@@ -66,20 +66,8 @@ public class PassManager {
         User user = userService.findById(userId);
 
         String orderId = String.valueOf(System.currentTimeMillis());
-        String orderName = passType.name() + " 정기권";
 
-        Payment payment;
-        try {
-            payment = paymentService.createPayment(
-                    user,
-                    (long) passType.getPrice(),
-                    paymentMethod,
-                    orderId,
-                    orderName
-            );
-        } catch (Exception e) {
-            throw new GlobalException(ErrorCode.PAYMENT_FAILED);
-        }
+        Payment payment = new Payment(user, passType.getPrice(), paymentMethod, orderId);
 
         Pass pass = passService.createPass(user, passType, payment);
         return PassResponse.from(pass);

@@ -32,10 +32,11 @@ public class ReservationManager {
         User user = userService.findById(userId);
         Route route = routeService.findById(routeId);
 
-        boolean hasActivePass = passService.hasActivePass(user);
-        if (!hasActivePass) {
-            routeService.incrementBookedSeats(routeId);
-        }
+//        boolean hasActivePass = passService.hasActivePass(user);
+//        if (!hasActivePass) {
+//            routeService.incrementBookedSeats(routeId);
+//        }
+        routeService.incrementBookedSeats(routeId);
 
         Reservation reservation = Reservation.builder()
                 .user(user)
