@@ -39,7 +39,7 @@ class RouteControllerTest {
                 new RouteResponse(2L, "제주대학교병원", "10:00", "10:30", 30, 12, 15, "애월읍사무소 앞")
         );
 
-        when(routeManager.getRoutes(any(), eq("default"))).thenReturn(mockRoutes);
+        when(routeManager.getRoutes(eq("default"))).thenReturn(mockRoutes);
 
         // When & Then
         mockMvc.perform(get("/api/routes/list")
@@ -67,7 +67,7 @@ class RouteControllerTest {
                 new RouteResponse(3L, "제주대학교병원", "11:00", "11:30", 30, 18, 25, "애월읍사무소 앞")
         );
 
-        when(routeManager.getRoutes(any(), eq("time"))).thenReturn(mockRoutes);
+        when(routeManager.getRoutes(eq("time"))).thenReturn(mockRoutes);
 
         // When & Then
         mockMvc.perform(get("/api/routes/list")
@@ -85,7 +85,7 @@ class RouteControllerTest {
         // Given
         RouteResponse mockRoute = new RouteResponse(1L, "제주대학교병원", "09:00", "09:30", 30, 15, 20, "애월읍사무소 앞");
 
-        when(routeManager.getRoutes(any(), eq("default"))).thenReturn(Arrays.asList(mockRoute));
+        when(routeManager.getRoutes(eq("default"))).thenReturn(Arrays.asList(mockRoute));
 
         // When & Then
         mockMvc.perform(get("/api/routes/list")

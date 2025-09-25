@@ -18,8 +18,8 @@ public class RouteService {
 
     private final RouteRepository routeRepository;
 
-    public List<Route> getRoutesByDepartment(MedicalDepartment medicalDepartment, String sortBy) {
-        List<Route> routes = routeRepository.findByMedicalDepartment(medicalDepartment);
+    public List<Route> getRoutesByDepartment(String sortBy) {
+        List<Route> routes = routeRepository.findAll();
 
         return switch (sortBy) {
             case "startTime", "time" -> routes.stream()

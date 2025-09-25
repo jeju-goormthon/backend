@@ -19,10 +19,9 @@ public class RouteController implements RouteControllerSpec {
 
     @GetMapping("/list")
     public ApiResponse<List<RouteResponse>> getRoutes(
-            @AuthenticationPrincipal Long userId,
             @RequestParam(defaultValue = "default") String sortBy
     ) {
-        List<RouteResponse> routes = routeManager.getRoutes(userId, sortBy);
+        List<RouteResponse> routes = routeManager.getRoutes(sortBy);
         return ApiResponse.success(routes);
     }
 
