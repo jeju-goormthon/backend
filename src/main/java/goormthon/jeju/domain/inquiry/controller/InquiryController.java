@@ -1,5 +1,6 @@
 package goormthon.jeju.domain.inquiry.controller;
 
+import goormthon.jeju.domain.inquiry.controller.spec.InquiryControllerSpec;
 import goormthon.jeju.domain.inquiry.dto.AnswerInquiryRequest;
 import goormthon.jeju.domain.inquiry.dto.CreateInquiryRequest;
 import goormthon.jeju.domain.inquiry.dto.InquiryResponse;
@@ -15,7 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/inquiries")
 @RequiredArgsConstructor
-public class InquiryController {
+public class InquiryController implements InquiryControllerSpec {
 
     private final InquiryManager inquiryManager;
 

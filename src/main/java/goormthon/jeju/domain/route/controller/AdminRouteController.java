@@ -1,5 +1,6 @@
 package goormthon.jeju.domain.route.controller;
 
+import goormthon.jeju.domain.route.controller.spec.AdminRouteControllerSpec;
 import goormthon.jeju.domain.route.dto.CreateRouteRequest;
 import goormthon.jeju.domain.route.dto.RouteResponse;
 import goormthon.jeju.domain.route.manager.AdminRouteManager;
@@ -14,7 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/admin/routes")
 @RequiredArgsConstructor
-public class AdminRouteController {
+public class AdminRouteController implements AdminRouteControllerSpec {
 
     private final AdminRouteManager adminRouteManager;
 

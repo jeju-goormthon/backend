@@ -1,5 +1,6 @@
 package goormthon.jeju.domain.route.controller;
 
+import goormthon.jeju.domain.route.controller.spec.RouteControllerSpec;
 import goormthon.jeju.domain.route.dto.RouteResponse;
 import goormthon.jeju.domain.route.manager.RouteManager;
 import goormthon.jeju.global.common.ApiResponse;
@@ -12,7 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/routes")
 @RequiredArgsConstructor
-public class RouteController {
+public class RouteController implements RouteControllerSpec {
 
     private final RouteManager routeManager;
 

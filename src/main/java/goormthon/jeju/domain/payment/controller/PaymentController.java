@@ -1,5 +1,6 @@
 package goormthon.jeju.domain.payment.controller;
 
+import goormthon.jeju.domain.payment.controller.spec.PaymentControllerSpec;
 import goormthon.jeju.domain.payment.dto.PaymentResponse;
 import goormthon.jeju.domain.payment.manager.PaymentManager;
 import goormthon.jeju.global.common.ApiResponse;
@@ -12,7 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/payments")
 @RequiredArgsConstructor
-public class PaymentController {
+public class PaymentController implements PaymentControllerSpec {
 
     private final PaymentManager paymentManager;
 

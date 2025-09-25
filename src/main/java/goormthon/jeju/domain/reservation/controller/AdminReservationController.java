@@ -1,5 +1,6 @@
 package goormthon.jeju.domain.reservation.controller;
 
+import goormthon.jeju.domain.reservation.controller.spec.AdminReservationControllerSpec;
 import goormthon.jeju.domain.reservation.dto.ReservationResponse;
 import goormthon.jeju.domain.reservation.manager.AdminReservationManager;
 import goormthon.jeju.global.common.ApiResponse;
@@ -14,7 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/admin/reservations")
 @RequiredArgsConstructor
-public class AdminReservationController {
+public class AdminReservationController implements AdminReservationControllerSpec {
 
     private final AdminReservationManager adminReservationManager;
 

@@ -1,5 +1,6 @@
 package goormthon.jeju.domain.user.controller;
 
+import goormthon.jeju.domain.user.controller.spec.UserControllerSpec;
 import goormthon.jeju.domain.user.dto.*;
 import goormthon.jeju.domain.user.entity.User;
 import goormthon.jeju.domain.user.manager.UserManager;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
-public class UserController {
+public class UserController implements UserControllerSpec {
 
     private final UserManager userManager;
     private final PhoneVerificationService phoneVerificationService;

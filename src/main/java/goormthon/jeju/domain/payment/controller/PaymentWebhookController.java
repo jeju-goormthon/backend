@@ -1,5 +1,6 @@
 package goormthon.jeju.domain.payment.controller;
 
+import goormthon.jeju.domain.payment.controller.spec.PaymentWebhookControllerSpec;
 import goormthon.jeju.domain.payment.service.PaymentService;
 import goormthon.jeju.global.common.ApiResponse;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +13,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/webhook/payments")
 @RequiredArgsConstructor
-public class PaymentWebhookController {
+public class PaymentWebhookController implements PaymentWebhookControllerSpec {
 
     private final PaymentService paymentService;
 

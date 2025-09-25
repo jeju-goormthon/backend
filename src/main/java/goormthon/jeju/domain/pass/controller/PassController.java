@@ -1,5 +1,6 @@
 package goormthon.jeju.domain.pass.controller;
 
+import goormthon.jeju.domain.pass.controller.spec.PassControllerSpec;
 import goormthon.jeju.domain.pass.dto.PassResponse;
 import goormthon.jeju.domain.pass.dto.PurchasePassRequest;
 import goormthon.jeju.domain.pass.manager.PassManager;
@@ -14,7 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/passes")
 @RequiredArgsConstructor
-public class PassController {
+public class PassController implements PassControllerSpec {
 
     private final PassManager passManager;
 
