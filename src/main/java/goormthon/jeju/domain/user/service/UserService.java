@@ -92,6 +92,7 @@ public class UserService {
         }
     }
 
+    @Transactional
     public User findOrCreateByPhoneNumber(String phoneNumber) {
         return userRepository.findByPhoneNumber(phoneNumber)
                 .orElseGet(() -> {

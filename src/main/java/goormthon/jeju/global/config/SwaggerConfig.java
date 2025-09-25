@@ -32,6 +32,10 @@ public class SwaggerConfig {
                 .url("https://api-donghang.klr.kr")
                 .description("Production HTTPS Server"));
 
+        openAPI.addServersItem(new Server()
+                .url("http://localhost:8080")
+                .description("Local HTTP Server"));
+
         return openAPI;
     }
 }
