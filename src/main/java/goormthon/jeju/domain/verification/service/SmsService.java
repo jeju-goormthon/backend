@@ -34,6 +34,11 @@ public class SmsService {
     }
 
     public void sendSms(String to, String message) {
+        if (to == null || to.trim().isEmpty()) {
+            log.warn("SMS 전송 건너뜀: 전화번호가 없습니다");
+            return;
+        }
+
         try {
             Message msg = new Message();
             msg.setFrom(fromNumber);

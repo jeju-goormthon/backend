@@ -38,7 +38,10 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String email = oAuth2User.getAttribute("email");
 
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new GlobalException(ErrorCode.USER_NOT_FOUND));
+                .orElseThrow(() -> {
+                    log.error("OAuth2 로그인 성공했으나 사용자를 찾을 수 없음: {}", email);
+                    return new GlobalException(ErrorCode.USER_NOT_FOUND);
+                });
 
         String targetUrl;
 

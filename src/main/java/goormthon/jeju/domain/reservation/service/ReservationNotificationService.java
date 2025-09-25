@@ -23,6 +23,12 @@ public class ReservationNotificationService {
     private final SmsService smsService;
 
     public void sendReservationConfirmation(Reservation reservation) {
+        String phoneNumber = reservation.getUser().getPhoneNumber();
+        if (phoneNumber == null || phoneNumber.trim().isEmpty()) {
+            log.info("전화번호가 없어 예약 확인 SMS를 보내지 않습니다. 예약번호: {}", reservation.getReservationNumber());
+            return;
+        }
+
         String message = String.format(
                 "[제주 셔틀] 예약이 완료되었습니다.\n" +
                 "예약번호: %s\n" +
@@ -35,7 +41,7 @@ public class ReservationNotificationService {
                 reservation.getRoute().getStartTime()
         );
 
-        smsService.sendSms(reservation.getUser().getPhoneNumber(), message);
+        smsService.sendSms(phoneNumber, message);
     }
 
     @Scheduled(cron = "0 */10 * * * *")
@@ -57,6 +63,12 @@ public class ReservationNotificationService {
                 .toList();
 
         for (Reservation reservation : upcomingReservations) {
+            String phoneNumber = reservation.getUser().getPhoneNumber();
+            if (phoneNumber == null || phoneNumber.trim().isEmpty()) {
+                log.info("전화번호가 없어 탑승 알림 SMS를 보내지 않습니다. 예약번호: {}", reservation.getReservationNumber());
+                continue;
+            }
+
             String message = String.format(
                     "[제주 셔틀] 30분 후 출발 예정입니다.\n" +
                     "예약번호: %s\n" +
@@ -67,9 +79,9 @@ public class ReservationNotificationService {
                     reservation.getRoute().getStartTime()
             );
 
-            smsService.sendSms(reservation.getUser().getPhoneNumber(), message);
+            smsService.sendSms(phoneNumber, message);
             log.info("Boarding reminder sent to user {} for reservation {}",
-                    reservation.getUser().getPhoneNumber(),
+                    phoneNumber,
                     reservation.getReservationNumber());
         }
     }

@@ -9,4 +9,5 @@ spring:
       - payment
       - redis
       - sms
+      - server
       - swagger
