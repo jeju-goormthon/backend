@@ -20,11 +20,11 @@ public class RouteManager {
     private final RouteService routeService;
     private final UserService userService;
 
-    public List<RouteResponse> getRoutes(Long userId, String hospitalName, String sortBy) {
+    public List<RouteResponse> getRoutes(Long userId, String sortBy) {
         User user = userService.findById(userId);
         MedicalDepartment department = user.getMedicalDepartment();
 
-        List<Route> routes = routeService.getRoutesByHospitalAndDepartment(hospitalName, department, sortBy);
+        List<Route> routes = routeService.getRoutesByDepartment(department, sortBy);
         return routes.stream()
                 .map(RouteResponse::from)
                 .toList();

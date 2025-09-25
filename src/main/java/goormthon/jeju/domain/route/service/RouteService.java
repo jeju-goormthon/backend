@@ -17,14 +17,10 @@ import java.util.List;
 public class RouteService {
 
     private final RouteRepository routeRepository;
+    private final MockRouteDataService mockRouteDataService;
 
-    public List<Route> getRoutesByHospitalAndDepartment(String hospitalName, MedicalDepartment medicalDepartment, String sortBy) {
-        return switch (sortBy) {
-            case "startTime" -> routeRepository.findByHospitalNameAndMedicalDepartmentOrderByStartTimeAsc(hospitalName, medicalDepartment);
-            case "endTime" -> routeRepository.findByHospitalNameAndMedicalDepartmentOrderByEndTimeAsc(hospitalName, medicalDepartment);
-            case "expectedTime" -> routeRepository.findByHospitalNameAndMedicalDepartmentOrderByExpectedMinutesAsc(hospitalName, medicalDepartment);
-            default -> routeRepository.findByHospitalNameAndMedicalDepartment(hospitalName, medicalDepartment);
-        };
+    public List<Route> getRoutesByDepartment(MedicalDepartment medicalDepartment, String sortBy) {
+        return mockRouteDataService.getMockRoutesByDepartment(medicalDepartment, sortBy);
     }
 
     public Route findById(Long routeId) {

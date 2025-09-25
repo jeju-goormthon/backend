@@ -20,7 +20,7 @@ public interface RouteControllerSpec {
 
     @Operation(
             summary = "노선 목록 조회",
-            description = "특정 병원에 대한 노선 목록을 조회합니다. 정렬 옵션을 통해 다양한 방식으로 노선을 정렬할 수 있습니다."
+            description = "제주대학교병원 노선 목록을 조회합니다. 정렬 옵션을 통해 다양한 방식으로 노선을 정렬할 수 있습니다."
     )
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(
@@ -44,13 +44,7 @@ public interface RouteControllerSpec {
     ApiResponse<List<RouteResponse>> getRoutes(
             @Parameter(hidden = true) @AuthenticationPrincipal Long userId,
             @Parameter(
-                    description = "병원명",
-                    required = true,
-                    example = "제주대학교병원"
-            )
-            @RequestParam String hospitalName,
-            @Parameter(
-                    description = "정렬 방식 (default: 기본정렬, time: 시간순, price: 가격순)",
+                    description = "정렬 방식 (default: 기본정렬, time: 시간순, expectedTime: 예상시간순)",
                     example = "default"
             )
             @RequestParam(defaultValue = "default") String sortBy
