@@ -17,10 +17,22 @@ import java.util.List;
 public class RouteService {
 
     private final RouteRepository routeRepository;
-    private final MockRouteDataService mockRouteDataService;
 
     public List<Route> getRoutesByDepartment(MedicalDepartment medicalDepartment, String sortBy) {
-        return mockRouteDataService.getMockRoutesByDepartment(medicalDepartment, sortBy);
+        List<Route> routes = routeRepository.findByMedicalDepartment(medicalDepartment);
+
+        return switch (sortBy) {
+            case "startTime", "time" -> routes.stream()
+                    .sorted((r1, r2) -> r1.getStartTime().compareTo(r2.getStartTime()))
+                    .toList();
+            case "endTime" -> routes.stream()
+                    .sorted((r1, r2) -> r1.getEndTime().compareTo(r2.getEndTime()))
+                    .toList();
+            case "expectedTime" -> routes.stream()
+                    .sorted((r1, r2) -> r1.getExpectedMinutes().compareTo(r2.getExpectedMinutes()))
+                    .toList();
+            default -> routes; // 기본 정렬 (ID 순서)
+        };
     }
 
     public Route findById(Long routeId) {

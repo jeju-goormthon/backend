@@ -8,6 +8,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 public interface RouteRepository extends JpaRepository<Route, Long> {
+    List<Route> findByMedicalDepartment(MedicalDepartment medicalDepartment);
     List<Route> findByHospitalNameAndMedicalDepartment(String hospitalName, MedicalDepartment medicalDepartment);
     List<Route> findByHospitalNameAndMedicalDepartmentOrderByStartTimeAsc(String hospitalName, MedicalDepartment medicalDepartment);
     List<Route> findByHospitalNameAndMedicalDepartmentOrderByEndTimeAsc(String hospitalName, MedicalDepartment medicalDepartment);
