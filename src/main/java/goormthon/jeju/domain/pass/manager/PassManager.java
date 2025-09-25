@@ -7,6 +7,7 @@ import goormthon.jeju.domain.pass.service.PassService;
 import goormthon.jeju.domain.payment.entity.Payment;
 import goormthon.jeju.domain.payment.entity.PaymentMethod;
 import goormthon.jeju.domain.payment.service.PaymentService;
+import goormthon.jeju.domain.payment.dto.gateway.PaymentPrepareResponse;
 import goormthon.jeju.domain.user.entity.User;
 import goormthon.jeju.domain.user.service.UserService;
 import goormthon.jeju.global.exception.ErrorCode;
@@ -26,6 +27,40 @@ public class PassManager {
     private final PaymentService paymentService;
     private final UserService userService;
 
+    /**
+     * 정기권 구매 준비 (결제 전)
+     * Payment를 생성하고 결제 준비 정보를 반환합니다.
+     */
+    @Transactional
+    public PaymentPrepareResponse preparePurchase(Long userId, PassType passType, PaymentMethod paymentMethod) {
+        User user = userService.findById(userId);
+
+        // 활성 정기권 중복 체크
+        if (passService.hasActivePass(user)) {
+            throw new GlobalException(ErrorCode.PASS_ALREADY_EXISTS);
+        }
+
+        String orderId = "PASS_" + System.currentTimeMillis();
+        String orderName = passType.name() + " 정기권";
+
+        try {
+            return paymentService.preparePayment(
+                    user,
+                    (long) passType.getPrice(),
+                    paymentMethod,
+                    orderId,
+                    orderName
+            );
+        } catch (Exception e) {
+            throw new GlobalException(ErrorCode.PAYMENT_FAILED);
+        }
+    }
+
+    /**
+     * @deprecated 결제 전 정기권 생성으로 인한 데이터 무결성 문제로 사용 중단
+     * 대신 preparePurchase() 사용 권장
+     */
+    @Deprecated
     @Transactional
     public PassResponse purchasePass(Long userId, PassType passType, PaymentMethod paymentMethod) {
         User user = userService.findById(userId);

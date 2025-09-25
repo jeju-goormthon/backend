@@ -68,4 +68,25 @@ public class PassService {
         Pass pass = findById(passId);
         pass.cancel();
     }
+
+    @Transactional
+    public Pass createPassAfterPayment(Payment payment, PassType passType) {
+        if (payment.getStatus() != goormthon.jeju.domain.payment.entity.PaymentStatus.COMPLETED) {
+            throw new GlobalException(ErrorCode.PAYMENT_NOT_COMPLETED);
+        }
+
+        if (passRepository.existsByUserAndStatus(payment.getUser(), PassStatus.ACTIVE)) {
+            throw new GlobalException(ErrorCode.PASS_ALREADY_EXISTS);
+        }
+
+        Pass pass = Pass.builder()
+                .user(payment.getUser())
+                .passType(passType)
+                .startDate(LocalDateTime.now())
+                .price(passType.getPrice())
+                .payment(payment)
+                .build();
+
+        return passRepository.save(pass);
+    }
 }

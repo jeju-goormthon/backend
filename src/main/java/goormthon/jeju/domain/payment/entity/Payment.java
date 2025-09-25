@@ -33,14 +33,18 @@ public class Payment extends BaseTimeEntity {
     @Column(nullable = false, length = 20)
     private PaymentStatus status;
 
+    @Column(length = 100, unique = true)
+    private String orderId;
+
     @Column(length = 100)
     private String transactionId;
 
     @Builder
-    public Payment(User user, Integer amount, PaymentMethod paymentMethod) {
+    public Payment(User user, Integer amount, PaymentMethod paymentMethod, String orderId) {
         this.user = user;
         this.amount = amount;
         this.paymentMethod = paymentMethod;
+        this.orderId = orderId;
         this.status = PaymentStatus.PENDING;
     }
 

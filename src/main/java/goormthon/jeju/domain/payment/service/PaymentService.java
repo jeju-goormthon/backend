@@ -31,6 +31,7 @@ public class PaymentService {
                 .user(user)
                 .amount(amount.intValue())
                 .paymentMethod(paymentMethod)
+                .orderId(orderId)
                 .build();
 
         Payment savedPayment = paymentRepository.save(payment);
@@ -58,6 +59,7 @@ public class PaymentService {
                 .user(user)
                 .amount(amount.intValue())
                 .paymentMethod(paymentMethod)
+                .orderId(orderId)
                 .build();
 
         Payment savedPayment = paymentRepository.save(payment);
@@ -95,8 +97,7 @@ public class PaymentService {
 
     @Transactional
     public void completePaymentByOrderId(String orderId, String transactionId) {
-        Payment payment = paymentRepository.findById(Long.parseLong(orderId))
-                .orElseThrow(() -> new GlobalException(ErrorCode.PAYMENT_NOT_FOUND));
+        Payment payment = findByOrderId(orderId);
         payment.complete(transactionId);
     }
 
@@ -128,13 +129,17 @@ public class PaymentService {
 
     @Transactional
     public void failPaymentByOrderId(String orderId) {
-        Payment payment = paymentRepository.findById(Long.parseLong(orderId))
-                .orElseThrow(() -> new GlobalException(ErrorCode.PAYMENT_NOT_FOUND));
+        Payment payment = findByOrderId(orderId);
         payment.fail();
     }
 
     public Payment findById(Long paymentId) {
         return paymentRepository.findById(paymentId)
+                .orElseThrow(() -> new GlobalException(ErrorCode.PAYMENT_NOT_FOUND));
+    }
+
+    public Payment findByOrderId(String orderId) {
+        return paymentRepository.findByOrderId(orderId)
                 .orElseThrow(() -> new GlobalException(ErrorCode.PAYMENT_NOT_FOUND));
     }
 

@@ -32,6 +32,7 @@ public enum ErrorCode {
 
     PAYMENT_FAILED(HttpStatus.BAD_REQUEST, "PM001", "결제에 실패했습니다."),
     PAYMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "PM002", "결제 내역을 찾을 수 없습니다."),
+    PAYMENT_NOT_COMPLETED(HttpStatus.BAD_REQUEST, "PM003", "결제가 완료되지 않았습니다."),
 
     INQUIRY_NOT_FOUND(HttpStatus.NOT_FOUND, "I001", "문의를 찾을 수 없습니다."),
 
