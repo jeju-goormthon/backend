@@ -38,24 +38,17 @@ class PassServiceTest {
                 .loginType(LoginType.NORMAL)
                 .build();
 
-        goormthon.jeju.domain.payment.entity.Payment payment = goormthon.jeju.domain.payment.entity.Payment.builder()
-                .user(user)
-                .amount(30000)
-                .paymentMethod(goormthon.jeju.domain.payment.entity.PaymentMethod.TOSS_PAY)
-                .build();
-
         Pass pass = Pass.builder()
                 .user(user)
                 .passType(PassType.ONE_MONTH)
                 .startDate(java.time.LocalDateTime.now())
                 .price(PassType.ONE_MONTH.getPrice())
-                .payment(payment)
                 .build();
 
         when(passRepository.existsByUserAndStatus(user, PassStatus.ACTIVE)).thenReturn(false);
         when(passRepository.save(any(Pass.class))).thenReturn(pass);
 
-        Pass createdPass = passService.createPass(user, PassType.ONE_MONTH, payment);
+        Pass createdPass = passService.createPass(user, PassType.ONE_MONTH);
 
         assertThat(createdPass).isNotNull();
         assertThat(createdPass.getPassType()).isEqualTo(PassType.ONE_MONTH);

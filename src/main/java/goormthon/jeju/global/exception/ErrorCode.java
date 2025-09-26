@@ -38,6 +38,8 @@ public enum ErrorCode {
 
     ADMIN_ONLY(HttpStatus.FORBIDDEN, "A001", "관리자만 접근할 수 있습니다."),
 
+    INVALID_PARAMETER(HttpStatus.BAD_REQUEST, "V002", "잘못된 파라미터입니다."),
+
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "S001", "서버 에러가 발생했습니다.");
 
     private final HttpStatus status;

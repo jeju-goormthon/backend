@@ -1,6 +1,5 @@
 package goormthon.jeju.domain.pass.entity;
 
-import goormthon.jeju.domain.payment.entity.Payment;
 import goormthon.jeju.domain.user.entity.User;
 import goormthon.jeju.global.common.BaseTimeEntity;
 import jakarta.persistence.*;
@@ -42,19 +41,14 @@ public class Pass extends BaseTimeEntity {
     @Column(nullable = false, length = 20)
     private PassStatus status;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "payment_id")
-    private Payment payment;
-
     @Builder
-    public Pass(User user, PassType passType, LocalDateTime startDate, Integer price, Payment payment) {
+    public Pass(User user, PassType passType, LocalDateTime startDate, Integer price) {
         this.user = user;
         this.passType = passType;
         this.startDate = startDate;
         this.endDate = startDate.plusMonths(passType.getMonths());
         this.price = price;
         this.status = PassStatus.ACTIVE;
-        this.payment = payment;
     }
 
     public boolean isValid() {

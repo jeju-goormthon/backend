@@ -1,7 +1,7 @@
 package goormthon.jeju.domain.pass.controller.spec;
 
 import goormthon.jeju.domain.pass.dto.PassResponse;
-import goormthon.jeju.domain.pass.dto.PurchasePassRequest;
+import goormthon.jeju.domain.pass.dto.CreatePassRequest;
 import goormthon.jeju.global.common.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -21,13 +21,13 @@ import java.util.List;
 public interface PassControllerSpec {
 
     @Operation(
-            summary = "정기권 구매",
-            description = "새로운 정기권을 구매합니다. 구매 시 자동으로 결제가 연동됩니다."
+            summary = "정기권 생성",
+            description = "새로운 정기권을 생성합니다. (결제와 분리된 단순 생성)"
     )
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(
                     responseCode = "200",
-                    description = "정기권 구매 성공",
+                    description = "정기권 생성 성공",
                     content = @Content(schema = @Schema(implementation = PassResponse.class))
             ),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(
@@ -39,16 +39,11 @@ public interface PassControllerSpec {
                     responseCode = "400",
                     description = "잘못된 요청 (이미 활성 정기권 보유, 잘못된 정기권 타입 등)",
                     content = @Content(schema = @Schema(implementation = ApiResponse.class))
-            ),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(
-                    responseCode = "402",
-                    description = "결제 실패",
-                    content = @Content(schema = @Schema(implementation = ApiResponse.class))
             )
     })
-    ApiResponse<PassResponse> purchasePass(
+    ApiResponse<PassResponse> createPass(
             @Parameter(hidden = true) @AuthenticationPrincipal Long userId,
-            @Valid @RequestBody PurchasePassRequest request
+            @Valid @RequestBody CreatePassRequest request
     );
 
     @Operation(

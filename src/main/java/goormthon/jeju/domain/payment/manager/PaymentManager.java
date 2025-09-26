@@ -11,8 +11,6 @@ import goormthon.jeju.domain.payment.gateway.TossPaymentGateway;
 import goormthon.jeju.domain.payment.service.PaymentService;
 import goormthon.jeju.domain.user.entity.User;
 import goormthon.jeju.domain.user.service.UserService;
-import goormthon.jeju.domain.pass.service.PassService;
-import goormthon.jeju.domain.pass.entity.PassType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +25,6 @@ public class PaymentManager {
     private final PaymentService paymentService;
     private final UserService userService;
     private final TossPaymentGateway tossPaymentGateway;
-    private final PassService passService;
 
     public List<PaymentResponse> getMyPayments(Long userId) {
         User user = userService.findById(userId);
@@ -79,21 +76,4 @@ public class PaymentManager {
                 .build();
     }
 
-    /**
-     * 결제 완료 후 정기권 생성
-     * 정기권 구매 전용 결제 확인 메서드
-     */
-    @Transactional
-    public PaymentConfirmResponse confirmPaymentAndCreatePass(Long userId, PaymentConfirmRequest request, PassType passType) {
-        // 결제 승인
-        PaymentConfirmResponse confirmResponse = confirmPayment(userId, request);
-
-        // 결제 완료된 Payment 조회
-        Payment completedPayment = paymentService.findByOrderId(request.getOrderId());
-
-        // 결제 완료 후 정기권 생성
-        passService.createPassAfterPayment(completedPayment, passType);
-
-        return confirmResponse;
-    }
 }

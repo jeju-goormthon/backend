@@ -2,7 +2,7 @@ package goormthon.jeju.domain.pass.controller;
 
 import goormthon.jeju.domain.pass.controller.spec.PassControllerSpec;
 import goormthon.jeju.domain.pass.dto.PassResponse;
-import goormthon.jeju.domain.pass.dto.PurchasePassRequest;
+import goormthon.jeju.domain.pass.dto.CreatePassRequest;
 import goormthon.jeju.domain.pass.manager.PassManager;
 import goormthon.jeju.global.common.ApiResponse;
 import jakarta.validation.Valid;
@@ -19,15 +19,14 @@ public class PassController implements PassControllerSpec {
 
     private final PassManager passManager;
 
-    @PostMapping("/purchase")
-    public ApiResponse<PassResponse> purchasePass(
+    @PostMapping
+    public ApiResponse<PassResponse> createPass(
             @AuthenticationPrincipal Long userId,
-            @Valid @RequestBody PurchasePassRequest request
+            @Valid @RequestBody CreatePassRequest request
     ) {
-        PassResponse response = passManager.purchasePass(
+        PassResponse response = passManager.createPass(
                 userId,
-                request.getPassType(),
-                request.getPaymentMethod()
+                request.getPassType()
         );
         return ApiResponse.success(response);
     }

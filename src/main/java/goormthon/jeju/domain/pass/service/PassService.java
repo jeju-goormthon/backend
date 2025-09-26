@@ -4,7 +4,6 @@ import goormthon.jeju.domain.pass.entity.Pass;
 import goormthon.jeju.domain.pass.entity.PassStatus;
 import goormthon.jeju.domain.pass.entity.PassType;
 import goormthon.jeju.domain.pass.repository.PassRepository;
-import goormthon.jeju.domain.payment.entity.Payment;
 import goormthon.jeju.domain.user.entity.User;
 import goormthon.jeju.global.exception.ErrorCode;
 import goormthon.jeju.global.exception.GlobalException;
@@ -23,7 +22,7 @@ public class PassService {
     private final PassRepository passRepository;
 
     @Transactional
-    public Pass createPass(User user, PassType passType, Payment payment) {
+    public Pass createPass(User user, PassType passType) {
         if (passRepository.existsByUserAndStatus(user, PassStatus.ACTIVE)) {
             throw new GlobalException(ErrorCode.PASS_ALREADY_EXISTS);
         }
@@ -33,7 +32,6 @@ public class PassService {
                 .passType(passType)
                 .startDate(LocalDateTime.now())
                 .price(passType.getPrice())
-                .payment(payment)
                 .build();
 
         return passRepository.save(pass);
@@ -69,24 +67,4 @@ public class PassService {
         pass.cancel();
     }
 
-    @Transactional
-    public Pass createPassAfterPayment(Payment payment, PassType passType) {
-        if (payment.getStatus() != goormthon.jeju.domain.payment.entity.PaymentStatus.COMPLETED) {
-            throw new GlobalException(ErrorCode.PAYMENT_NOT_COMPLETED);
-        }
-
-        if (passRepository.existsByUserAndStatus(payment.getUser(), PassStatus.ACTIVE)) {
-            throw new GlobalException(ErrorCode.PASS_ALREADY_EXISTS);
-        }
-
-        Pass pass = Pass.builder()
-                .user(payment.getUser())
-                .passType(passType)
-                .startDate(LocalDateTime.now())
-                .price(passType.getPrice())
-                .payment(payment)
-                .build();
-
-        return passRepository.save(pass);
-    }
 }

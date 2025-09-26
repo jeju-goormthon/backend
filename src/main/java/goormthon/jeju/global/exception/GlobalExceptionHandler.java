@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 @Slf4j
 @RestControllerAdvice
@@ -26,6 +27,15 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .badRequest()
                 .body(ApiResponse.error("V001", message));
+    }
+
+    @ExceptionHandler({NumberFormatException.class, MethodArgumentTypeMismatchException.class})
+    public ResponseEntity<ApiResponse<Void>> handleParameterException(Exception e) {
+        log.error("Parameter validation error: {}", e.getMessage());
+        ErrorCode errorCode = ErrorCode.INVALID_PARAMETER;
+        return ResponseEntity
+                .status(errorCode.getStatus())
+                .body(ApiResponse.error(errorCode.getCode(), errorCode.getMessage()));
     }
 
     @ExceptionHandler(Exception.class)

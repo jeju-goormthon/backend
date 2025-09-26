@@ -13,3 +13,7 @@ spring:
     url: jdbc:h2:mem:testdb
     username: sa
     password:
+
+  sql:
+    init:
+      mode: never
